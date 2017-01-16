@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style.css" 
+      media="screen" type="text/css"/>
+<body>
+<div id="tooltip"></div><!-- div to hold tooltip. -->
+
+<h2>Slider year from 1953 to 2013: <span id="slider3text">1953</span></h2>
+<div id="slider3" width ="1150"></div>
+<br/>
+<svg width="400" height="400" id="pointsvg"></svg>
+<svg width="400" height="400" id="pointroll"></svg>
+<svg width="300" height="400" >
+	<svg width="300" height="400" id="means0"></svg>
+	<svg width="300" height="400" id="means1"></svg>
+</svg>
+
+
+<svg width="560" height="500" id="statesvg"></svg>
+<script src="d3.v3.min.js"></script>
+
+<script src="index.js"></script> 
+<script src="d3.slider.js"></script> 
+<script src="numeric.js"></script>
+<script>
+    /* function to create html content string in tooltip div. */    
+	function tooltipHtml(n, d){	
+    	if (n == '中国')
+    		return "<h4>"+n+"</h4><table>"+
+			"</table>";
+		return "<h4>"+n+"</h4><table>"+
+			"<tr><td>生产总值</td><td>"+(d.total)+"</td></tr>"+
+			"</table>";
+	};
+	function id2name(u ,id){
+		for(var i=0;i<34;i++){
+			if(u[i].id == id)
+				return u[i].n;
+			if(id == 'ZH')
+				return '中国';
+		}
+	};
+	
+	mds.Classic = function (distances, dimensions) {
+	    dimensions = dimensions || 2;
+	    var S = numeric.house(distances);
+	    console.log(S);
+	    // square distances
+	    var M = numeric.mul(-.5, numeric.pow(distances, 2));
+
+	    // double centre the rows/columns
+	    function mean(A) { return numeric.div(numeric.add.apply(null, A), A.length); }
+	    var rowMeans = mean(M),
+	        colMeans = mean(numeric.transpose(M)),
+	        totalMean = mean(rowMeans);
+
+	    for (var i = 0; i < M.length; ++i) {
+	        for (var j =0; j < M[0].length; ++j) {
+	            M[i][j] += totalMean - rowMeans[i] - colMeans[j];
+	        }
+	    }
+
+	    // take the SVD of the double centred matrix, and return the
+	    // points from it
+	    var ret = numeric.svd(M),
+	        eigenValues = numeric.sqrt(ret.S);
+	    return ret.U.map(function(row) {
+	        return numeric.mul(row, eigenValues).splice(0, dimensions);
+	    });
+	};
+	 
+	
+	d3.select('#slider3').call(d3.slider().value(1952).min(1952).max(2013).step(1).on("slide", function(evt, value) {
+	      d3.select('#slider3text').text(value);
+	      if(value == 2013)
+	    	  jsMDS(2013),
+	    	  mds("total/point2013_total.csv",sampleData2013),
+	    	  uStates.draw("#statesvg", sampleData2013, tooltipHtml);
+	      if(value == 2012)
+	    	  jsMDS(2012),
+	    	  mds("total/point2012_total.csv",sampleData2012),
+	    	  uStates.draw("#statesvg", sampleData2012, tooltipHtml);
+	      if(value == 2011)
+	    	  jsMDS(2011),
+	    	  mds("total/point2011_total.csv",sampleData2011),
+	    	  uStates.draw("#statesvg", sampleData2011, tooltipHtml);
+	      if(value == 2010)
+	    	  jsMDS(2010),
+	    	  mds("total/point2010_total.csv",sampleData2010),
+	    	  uStates.draw("#statesvg", sampleData2010, tooltipHtml);
+	      
+	      if(value == 1952)
+	    	  jsMDS(1952),
+	    	  uStates.draw("#statesvg", sampleData1952, tooltipHtml);
+	      if(value == 1953)
+	    	  jsMDS(1953),
+	    	  mds("total/point1953_total.csv",sampleData1953),
+	    	  roll("total/point1953_total.csv",sampleData1953),
+	    	  uStates.draw("#statesvg", sampleData1953, tooltipHtml);
+	      if(value == 1954)
+	    	  jsMDS(1954),
+	    	  mds("total_1/point1954_rotateDis.csv",sampleData1954),
+	    	  roll("total_2/point1954_rotateRoll.csv",sampleData1954),
+	    	  uStates.draw("#statesvg", sampleData1954, tooltipHtml);
+	      if(value == 1955)
+	    	  jsMDS(1955),
+	    	  mds("total_1/point1955_rotateDis.csv",sampleData1955),
+	    	  roll("total_2/point1955_rotateRoll.csv",sampleData1955),
+	    	  uStates.draw("#statesvg", sampleData1955, tooltipHtml);
+	      if(value == 1956)
+	    	  mds("total_1/point1956_rotateDis.csv",sampleData1956),
+	    	  roll("total_2/point1956_rotateRoll.csv",sampleData1956),
+	    	  uStates.draw("#statesvg", sampleData1956, tooltipHtml);
+	      if(value == 1957)
+	    	  mds("total_1/point1957_rotateDis.csv",sampleData1957),
+	    	  roll("total_2/point1957_rotateRoll.csv",sampleData1957),
+	    	  uStates.draw("#statesvg", sampleData1957, tooltipHtml);
+	      if(value == 1958)
+	    	  mds("total_1/point1958_rotateDis.csv",sampleData1958),
+	    	  roll("total_2/point1958_rotateRoll.csv",sampleData1958),
+	    	  uStates.draw("#statesvg", sampleData1958, tooltipHtml);
+	      if(value == 1959)
+	    	  mds("total_1/point1959_rotateDis.csv",sampleData1959),
+	    	  roll("total_2/point1959_rotateRoll.csv",sampleData1959),
+	    	  uStates.draw("#statesvg", sampleData1959, tooltipHtml);
+	      if(value == 1960)
+	    	  mds("total_1/point1960_rotateDis.csv",sampleData1960),
+	    	  roll("total_2/point1960_rotateRoll.csv",sampleData1960),
+	    	  uStates.draw("#statesvg", sampleData1960, tooltipHtml);
+	      
+	      if(value == 1961)
+	    	  mds("total_1/point1961_rotateDis.csv",sampleData1961),
+	    	  roll("total_2/point1961_rotateRoll.csv",sampleData1961),
+	    	  uStates.draw("#statesvg", sampleData1961, tooltipHtml);
+	      if(value == 1962)
+	    	  mds("total_1/point1962_rotateDis.csv",sampleData1962),
+	    	  roll("total_2/point1962_rotateRoll.csv",sampleData1962),
+	    	  uStates.draw("#statesvg", sampleData1962, tooltipHtml);
+	      if(value == 1963)
+	    	  mds("total_1/point1963_rotateDis.csv",sampleData1963),
+	    	  roll("total_2/point1963_rotateRoll.csv",sampleData1963),
+	    	  uStates.draw("#statesvg", sampleData1963, tooltipHtml);
+	      if(value == 1964)
+	    	  mds("total_1/point1964_rotateDis.csv",sampleData1964),
+	    	  roll("total_2/point1964_rotateRoll.csv",sampleData1964),
+	    	  uStates.draw("#statesvg", sampleData1964, tooltipHtml);
+	      if(value == 1965)
+	    	  mds("total_1/point1965_rotateDis.csv",sampleData1965),
+	    	  roll("total_2/point1965_rotateRoll.csv",sampleData1965),
+	    	  uStates.draw("#statesvg", sampleData1965, tooltipHtml);
+	      if(value == 1966)
+	    	  mds("total_1/point1966_rotateDis.csv",sampleData1966),
+	    	  roll("total_2/point1966_rotateRoll.csv",sampleData1966),
+	    	  uStates.draw("#statesvg", sampleData1966, tooltipHtml);
+	      if(value == 1967)
+	    	  mds("total_1/point1967_rotateDis.csv",sampleData1967),
+	    	  roll("total_2/point1967_rotateRoll.csv",sampleData1967),
+	    	  uStates.draw("#statesvg", sampleData1967, tooltipHtml);
+	      if(value == 1968)
+	    	  mds("total_1/point1968_rotateDis.csv",sampleData1968),
+	    	  roll("total_2/point1968_rotateRoll.csv",sampleData1968),
+	    	  uStates.draw("#statesvg", sampleData1968, tooltipHtml);
+	      if(value == 1969)
+	    	  mds("total_1/point1969_rotateDis.csv",sampleData1969),
+	    	  roll("total_2/point1969_rotateRoll.csv",sampleData1969),
+	    	  uStates.draw("#statesvg", sampleData1969, tooltipHtml);
+	      if(value == 1970)
+	    	  mds("total_1/point1970_rotateDis.csv",sampleData1970),
+	    	  roll("total_2/point1970_rotateRoll.csv",sampleData1970),
+	    	  uStates.draw("#statesvg", sampleData1970, tooltipHtml);
+	      
+	      if(value == 1971)
+	    	  mds("total_1/point1971_rotateDis.csv",sampleData1971),
+	    	  roll("total_2/point1971_rotateRoll.csv",sampleData1971),
+	    	  uStates.draw("#statesvg", sampleData1971, tooltipHtml);
+	      if(value == 1972)
+	    	  mds("total_1/point1972_rotateDis.csv",sampleData1972),
+	    	  roll("total_2/point1972_rotateRoll.csv",sampleData1972),
+	    	  uStates.draw("#statesvg", sampleData1972, tooltipHtml);
+	      if(value == 1973)
+	    	  mds("total_1/point1973_rotateDis.csv",sampleData1973),
+	    	  roll("total_2/point1973_rotateRoll.csv",sampleData1973),
+	    	  uStates.draw("#statesvg", sampleData1973, tooltipHtml);
+	      if(value == 1974)
+	    	  mds("total_1/point1974_rotateDis.csv",sampleData1974),
+	    	  roll("total_2/point1974_rotateRoll.csv",sampleData1974),
+	    	  uStates.draw("#statesvg", sampleData1974, tooltipHtml);
+	      if(value == 1975)
+	    	  mds("total_1/point1975_rotateDis.csv",sampleData1975),
+	    	  roll("total_2/point1975_rotateRoll.csv",sampleData1975),
+	    	  uStates.draw("#statesvg", sampleData1975, tooltipHtml);
+	      if(value == 1976)
+	    	  mds("total_1/point1976_rotateDis.csv",sampleData1976),
+	    	  roll("total_2/point1976_rotateRoll.csv",sampleData1976),
+	    	  uStates.draw("#statesvg", sampleData1976, tooltipHtml);
+	      if(value == 1977)
+	    	  mds("total_1/point1977_rotateDis.csv",sampleData1977),
+	    	  roll("total_2/point1977_rotateRoll.csv",sampleData1977),
+	    	  uStates.draw("#statesvg", sampleData1977, tooltipHtml);
+	      if(value == 1978)
+	    	  mds("total/point1978_total.csv",sampleData1978),
+	    	  uStates.draw("#statesvg", sampleData1978, tooltipHtml);
+	      if(value == 1979)
+	    	  mds("total/point1979_total.csv",sampleData1979),
+	    	  uStates.draw("#statesvg", sampleData1979, tooltipHtml);
+	      if(value == 1980)
+	    	  mds("total/point1980_total.csv",sampleData1980),
+	    	  uStates.draw("#statesvg", sampleData1980, tooltipHtml);
+	      
+	      if(value == 1981)
+	    	  mds("total/point1981_total.csv",sampleData1981),
+	    	  uStates.draw("#statesvg", sampleData1981, tooltipHtml);
+	      if(value == 1982)
+	    	  mds("total/point1982_total.csv",sampleData1982),
+	    	  uStates.draw("#statesvg", sampleData1982, tooltipHtml);
+	      if(value == 1983)
+	    	  mds("total/point1983_total.csv",sampleData1983),
+	    	  uStates.draw("#statesvg", sampleData1983, tooltipHtml);
+	      if(value == 1984)
+	    	  mds("total/point1984_total.csv",sampleData1984),
+	    	  uStates.draw("#statesvg", sampleData1984, tooltipHtml);
+	      if(value == 1985)
+	    	  mds("total/point1985_total.csv",sampleData1985),
+	    	  uStates.draw("#statesvg", sampleData1985, tooltipHtml);
+	      if(value == 1986)
+	    	  mds("total/point1986_total.csv",sampleData1986),
+	    	  uStates.draw("#statesvg", sampleData1986, tooltipHtml);
+	      if(value == 1987)
+	    	  mds("total/point1987_total.csv",sampleData1987),
+	    	  uStates.draw("#statesvg", sampleData1987, tooltipHtml);
+	      if(value == 1988)
+	    	  mds("total/point1988_total.csv",sampleData1988),
+	    	  uStates.draw("#statesvg", sampleData1988, tooltipHtml);
+	      if(value == 1989)
+	    	  mds("total/point1989_total.csv",sampleData1989),
+	    	  uStates.draw("#statesvg", sampleData1989, tooltipHtml);
+	      if(value == 1990)
+	    	  mds("total/point1990_total.csv",sampleData1990),
+	    	  uStates.draw("#statesvg", sampleData1990, tooltipHtml);
+	      
+	      if(value == 1991)
+	    	  mds("total/point1991_total.csv",sampleData1991),
+	    	  uStates.draw("#statesvg", sampleData1991, tooltipHtml);
+	      if(value == 1992)
+	    	  mds("total/point1992_total.csv",sampleData1992),
+	    	  uStates.draw("#statesvg", sampleData1992, tooltipHtml);
+	      if(value == 1993)
+	    	  mds("total/point1993_total.csv",sampleData1993),
+	    	  uStates.draw("#statesvg", sampleData1993, tooltipHtml);
+	      if(value == 1994)
+	    	  mds("total/point1994_total.csv",sampleData1994),
+	    	  uStates.draw("#statesvg", sampleData1994, tooltipHtml);
+	      if(value == 1995)
+	    	  mds("total/point1995_total.csv",sampleData1995),
+	    	  uStates.draw("#statesvg", sampleData1995, tooltipHtml);
+	      if(value == 1996)
+	    	  mds("total/point1996_total.csv",sampleData1996),
+	    	  uStates.draw("#statesvg", sampleData1996, tooltipHtml);
+	      if(value == 1997)
+	    	  mds("total/point1997_total.csv",sampleData1997),
+	    	  uStates.draw("#statesvg", sampleData1997, tooltipHtml);
+	      if(value == 1998)
+	    	  mds("total/point1998_total.csv",sampleData1998),
+	    	  uStates.draw("#statesvg", sampleData1998, tooltipHtml);
+	      if(value == 1999)
+	    	  mds("total/point1999_total.csv",sampleData1999),
+	    	  uStates.draw("#statesvg", sampleData1999, tooltipHtml);
+	      if(value == 2000)
+	    	  mds("total/point2000_total.csv",sampleData2000),
+	    	  uStates.draw("#statesvg", sampleData2000, tooltipHtml);
+	      
+	      if(value == 2001)
+	    	  mds("total/point2001_total.csv",sampleData2001),
+	    	  uStates.draw("#statesvg", sampleData2001, tooltipHtml);
+	      if(value == 2002)
+	    	  mds("total/point2002_total.csv",sampleData2002),
+	    	  uStates.draw("#statesvg", sampleData2002, tooltipHtml);
+	      if(value == 2003)
+	    	  mds("total/point2003_total.csv",sampleData2003),
+	    	  uStates.draw("#statesvg", sampleData2003, tooltipHtml);
+	      if(value == 2004)
+	    	  mds("total/point2004_total.csv",sampleData2004),
+	    	  uStates.draw("#statesvg", sampleData2004, tooltipHtml);
+	      if(value == 2005)
+	    	  mds("total/point2005_total.csv",sampleData2005),
+	    	  uStates.draw("#statesvg", sampleData2005, tooltipHtml);
+	      if(value == 2006)
+	    	  mds("total/point2006_total.csv",sampleData2006),
+	    	  uStates.draw("#statesvg", sampleData2006, tooltipHtml);
+	      if(value == 2007)
+	    	  mds("total/point2007_total.csv",sampleData2007),
+	    	  uStates.draw("#statesvg", sampleData2007, tooltipHtml);
+	      if(value == 2008)
+	    	  mds("total/point2008_total.csv",sampleData2008),
+	    	  uStates.draw("#statesvg", sampleData2008, tooltipHtml);
+	      if(value == 2009)
+	    	  mds("total/point2009_total.csv",sampleData2009),
+	    	  uStates.draw("#statesvg", sampleData2009, tooltipHtml);
+	    }));
+
+</script>
+
+</body>
