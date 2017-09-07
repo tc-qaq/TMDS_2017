@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+	<head>
+		<meta charset = "uft-8">
+		<title>VisGDP</title>
+		
+	</head>
+	<body>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+		<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="jquery-1.2.6.js"></script>
+		<script type="text/javascript" src="jquery.jslider.js"></script>
+		<script src="http://d3js.org/d3-polygon.v1.min.js"></script>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>  -->
+		<link href="css/style15.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/jquery.css">
+			
+
+      
+		<div id="main">    
+            
+            <div id="pcp">
+            <label id="labeData" style="font-size: 14px;border:0;width:80px; margin-top:0px">GDP数据</label><!--GDP空气污染-->
+                <div id="pcp1"></div>    
+            </div>      
+            <div id ="radio1"></div>
+            <div id ="radio2">
+				<form id = "formD"><table>		
+					<tr><td><input type = "radio" name = "sizeGroup" value = "0" onclick = "changeSize(this)" >Small(3)</td></tr>
+                    <tr><td><input type = "radio" name = "sizeGroup" value = "1" onclick = "changeSize(this)" checked>Mid(5)<br /></td></tr>
+					<tr><td><input type = "radio" name = "sizeGroup" value = "2" onclick = "changeSize(this)" >Big(10)<br /></td></tr>
+				</table></form>
+				<form id = "formE"><table>		
+					<tr><td><input type = "radio" name = "hexGroup" value = "0" onclick = "changeHex(this)" checked>Disappear</td></tr>
+                    <tr><td><input type = "radio" name = "hexGroup" value = "1" onclick = "changeHex(this)" >Assemble<br /></td></tr>
+				</table></form>
+			</div>
+            <div id="hcluster">
+                <form id = "formA"><table>                    
+                    <input type="checkbox" name="CheckBoxGroup" onclick="changeMDS(this)">	
+                    <input type="text" id="checkMDS0" value="经典MDS" style="font-size: 14px;border:0;width:80px;">
+                    <input type="checkbox" name="CheckBoxGroup" onclick="changeMDS(this)">	
+                    <input type="text" id="checkMDS1" value="圆点式投影" style="font-size: 14px;border:0;width:80px;">
+                    <input type="checkbox" name="CheckBoxGroup" onclick="changeMDS(this)">	
+                    <input type="text" id="checkMDS2" value="分组动画展示" style="font-size: 14px;border:0;width:90px;">
+				</table></form>
+                <div id="hcluster1"></div>	
+            </div>
+			
+            <div id="statistic">
+				
+                <div id="Bar1">
+                      <form id = "form3"><table>
+                        <input type="checkbox" name="CheckBoxGroup" onclick="changeShow(this)"checked>	
+                        <input type="text" id="check0" value="经典MDS" style="font-size: 16px;border:0;width:80px;">
+                        <input type="checkbox" name="CheckBoxGroup"onclick="changeShow(this)">				
+                        <input type="text" id="check1" value="正交变换" style="font-size: 16px;border:0;">
+                </table></form>
+                            <from  id="statistic_year"><table>
+                    <tr><td><input type ="radio" name ="barGroup" value="0" onclick = "changeBar(this)" checked>所有数据</td>
+                    <td><input type ="radio" name ="barGroup" value="1" onclick = "changeBar(this)" >单个聚类</td>
+                    <td><input type ="radio" name ="barGroup" value="2" onclick = "changeBar(this)" >单个数据</td></tr>
+				 </table></from>
+                            <!--<div id="statistic_rect"></div>   -->
+                            <div id="Bar"></div>
+                		</div>                		
+            		</div>
+            <div id="hcluster_control">
+                		<label id="Label_hcluster_threash" style="margin-left: 10px;">阈&nbsp;&nbsp;&nbsp;值：</label>
+		        	<input type="text" id="hcluster_thresh" value="0.5" style="border:0; color:#f6931f; font-weight:bold;">
+                		<input id="slider_hcluster_thresh" type="range" min="1" max="9" value="5"step="1" oninput="changeA()" onchange="changeA()"></br>
+					    <label id="Label_hcluster_threash_min" style="margin-left: 80px;">0.0</label>
+                        <label id="Label_hcluster_threash_max" style="margin-left: 625px;">1</label>
+				<label id="Label_hcluster_year" style="margin-left: 10px;">时&nbsp;&nbsp;&nbsp;间：</label>
+		        	<input type="text" id="hcluster_year" value="1952" style="border:0; color:#f6931f; font-weight:bold;">
+				<input id="slider_hcluster_year" type="range" min="0" max="61" value="0"step="1" oninput="changeB()" onchange="changeB()"></br>
+                		<label id="Label_hcluster_year_min" style="margin-left: 80px;">1952</label>
+                        <label id="Label_hcluster_year_max" style="margin-left: 620px;">2013</label>
+				<label id="label_cluster_stability" style="margin-left:10px;">稳定性：</label>
+                        <label id="Label_hcluster_stability_min" style="margin-top:55px;margin-left: 80px;">弱</label>
+                        <label id="Label_hcluster_stability_max" style="margin-left: 630px;">强</label>
+                	        </div>
+		</div>
+        
+		<script type = "text/javascript" charset = "utf-8">
+		     
+		</script>
+		
+		<script type = "text/javascript" src = "js/data30.js" charset = "utf-8"></script>
+		<script type = "text/javascript" src = "js/code2.js" charset = "utf-8"></script>
+		<script type = "text/javascript" src = "js/slider15.js" charset = "utf-8"></script>		
+		<script type = "text/javascript" src = "js/drawPro9.js" charset = "utf-8"></script>
+		<script type = "text/javascript" src = "js/drawMDS.js" charset = "utf-8"></script>
+		<script type = "text/javascript" src = "js/drawBar14.js" charset = "utf-8"></script>
+        <script type = "text/javascript" src = "js/drawPcp.js" charset = "utf-8"></script>
+		<!-- <script type = "text/javascript" src = "js/drawMatrix3.js" charset = "utf-8"></script> -->
+		<script type = "text/javascript" src = "js/hcluster.js" charset = "utf-8"></script>
+		<script type = "text/javascript" src = "js/histogram.js" charset = "utf-8"></script>
+		<script type = "text/javascript" src = "js/numeric.js" charset = "utf-8"></script>
+     
+	</body>
+</html>
